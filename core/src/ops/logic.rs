@@ -29,7 +29,9 @@ bin_to_bool!(greater, Greater,
     [bool, u8, u16, u32, u64, i8, i16, i32, i64, f32, f64] => |c, &a, &b | *c = a > b);
 bin_to_bool!(greater_equal, GreaterEqual,
     codegen_unary: codegen_compare_to_zero,
-    [bool, u8, u16, u32, u64, i8, i16, i32, i64, f32, f64] => |c, &a, &b | *c = a >= b);
+    // The diff here is because I needed TDim to support GreaterEqual, and for that, since (apparently)
+    // GreaterEqual doesn't implement Copy, (apprrently), I can't pass it by reference
+    [bool, u8, u16, u32, u64, i8, i16, i32, i64, f32, f64, TDim] => |c, a, b | *c = a >= b);
 
 fn codegen_compare_to_zero(
     op: &dyn BinMiniOp,
